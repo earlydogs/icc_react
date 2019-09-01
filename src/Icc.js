@@ -183,7 +183,7 @@ class ICC extends React.Component{
         <div className="col-xl-8">
           <div className="container-fluid">
             <div className="col mb-4 shadow mt-2 pt-2 pb-4 rounded">
-              ここにグラフが出る
+              ここにグラフが出る!!React16.9ではRechartsが使用できない。
               <ResponsiveContainer width="95%">
                 <LineChart
                   data={this.state.recharts} // 表示するデータ  
