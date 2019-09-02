@@ -17,8 +17,7 @@ class ICC extends React.Component{
       assholeFinalBalance: null,                                     /* タンス預金 最終金額 */
       simpleFinalBalance: null,                                      /* 単利 　　　最終金額 */
       compoundFinalBalance: null,                                    /* 複利 　　　最終金額 */
-      rateOfIncrease: null,                                          /* 利益率 */
-      recharts:[],
+      rateOfIncrease: null,
     };
   }
   
@@ -32,6 +31,7 @@ class ICC extends React.Component{
     });
   }
 
+  
   /* 毎月積立（万円）インプット */
   handleMonthlyAdditionChange(event) {
     const inputValue = event.target.value;
@@ -72,6 +72,7 @@ class ICC extends React.Component{
     let nenri = new bigDecimal(this.state.interestRateYear/100);
     let toushiKikan = new bigDecimal(this.state.periodYear);
     let getsuri = new bigDecimal(this.state.interestRateMonth);
+    let rechartsData = [];
 
 
     /* 配列準備　INITIALIZE*/
@@ -84,7 +85,7 @@ class ICC extends React.Component{
     fukuriKingaku.push(ganpon.getValue());
     compoundCalculationBalance.push(ganpon.getValue());
 
-    this.state.recharts.push({
+    rechartsData.push({
       year: 0,
       tanri: ganpon.getValue(),
       fukuri: ganpon.getValue(),
@@ -125,13 +126,15 @@ class ICC extends React.Component{
         console.log(`タンス預金：${tansuYokin[countYear].getPrettyValue()}万円`);
         console.log(`単利　　　：${tanriKingaku[countYear].getPrettyValue()}万円`);
         console.log(`複利　　　：${fukuriKingaku[countYear].getPrettyValue()}万円`);
-        this.state.recharts.push({
+        rechartsData.push({
           year: countYear,
           tanri: tanriKingaku[countYear].getValue(),
           fukuri: fukuriKingaku[countYear].getValue(),
           chokin: tansuYokin[countYear].getValue(),
         });
-        console.log(this.state.recharts[countYear]);
+        console.log(rechartsData[countYear]);
+        console.log(rechartsData);
+
       }
     }
     const riekiritsu = Math.round((fukuriKingaku[countYear].getValue()/tansuYokin[countYear].getValue()*100)*10)/10;
@@ -149,6 +152,7 @@ class ICC extends React.Component{
   /* 複利計算ボタンを押下した際の処理*/
   handleSubmit() {
     if(this.state.currentBalance !== null && this.state.monthlyAddition !== null && this.state.interestRateYear !== null && this.state.periodYear !== null){
+
       this.calcCompaundLogic();
       this.setState({isSubmitted: true});  
     }
@@ -183,10 +187,10 @@ class ICC extends React.Component{
         <div className="col-xl-8">
           <div className="container-fluid">
             <div className="col mb-4 shadow mt-2 pt-2 pb-4 rounded">
-              ここにグラフが出る!!React16.9ではRechartsが使用できない。
+              ここにグラフが出る!!
               <ResponsiveContainer width="95%">
                 <LineChart
-                  data={this.state.recharts} // 表示するデータ  
+                  data={this.rechartsData} // 表示するデータ  
                   margin={{top: 5, right: 50, left: 50, bottom: 25}}>
                   <XAxis // X軸
                     dataKey="year" // X軸の基準となるデータ項目名
