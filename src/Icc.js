@@ -1,7 +1,6 @@
 import React from 'react';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-var bigDecimal = require('js-big-decimal');
-
+import bigDecimal from 'js-big-decimal';
 
 class ICC extends React.Component{
   
@@ -143,6 +142,41 @@ class ICC extends React.Component{
       compoundFinalBalance: fukuriKingaku[countYear].getPrettyValue(),
       rateOfIncrease: riekiritsu,
     });
+
+    const displayChart = (
+      <ResponsiveContainer width="95%">
+                <LineChart
+                  data={this.rechartsData} // 表示するデータ  
+                  margin={{top: 5, right: 50, left: 50, bottom: 25}}>
+                  <XAxis // X軸
+                    dataKey="year" // X軸の基準となるデータ項目名
+                  />
+                  <YAxis />
+                  <CartesianGrid />
+                  <Tooltip />
+                  <Line // タンス預金
+                    name="複利"
+                    dataKey="chokin" // this.props.data のキー
+                    stroke="salmon" // 線の色
+                    unit="万円" //単位
+                  />
+                  <Line // 単利
+                    name="単利"
+                    dataKey="tanri" // this.props.data のキー
+                    stroke="skyblue" // 線の色
+                    unit="万円" //単位
+                  />
+                  <Line // 複利
+                    name="複利"
+                    dataKey="fukuri" // this.props.data のキー
+                    stroke="#8884d8" // 線の色
+                    unit="万円" //単位
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+    );
+    console.log(displayChart);
+    
    
   }
 
@@ -188,36 +222,8 @@ class ICC extends React.Component{
           <div className="container-fluid">
             <div className="col mb-4 shadow mt-2 pt-2 pb-4 rounded">
               ここにグラフが出る!!
-              <ResponsiveContainer width="95%">
-                <LineChart
-                  data={this.rechartsData} // 表示するデータ  
-                  margin={{top: 5, right: 50, left: 50, bottom: 25}}>
-                  <XAxis // X軸
-                    dataKey="year" // X軸の基準となるデータ項目名
-                  />
-                  <YAxis />
-                  <CartesianGrid />
-                  <Tooltip />
-                  <Line // タンス預金
-                    name="複利"
-                    dataKey="chokin" // this.props.data のキー
-                    stroke="salmon" // 線の色
-                    unit="万円" //単位
-                  />
-                  <Line // 単利
-                    name="単利"
-                    dataKey="tanri" // this.props.data のキー
-                    stroke="skyblue" // 線の色
-                    unit="万円" //単位
-                  />
-                  <Line // 複利
-                    name="複利"
-                    dataKey="fukuri" // this.props.data のキー
-                    stroke="#8884d8" // 線の色
-                    unit="万円" //単位
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+              {this.displayChart}
+              
             </div>
             <div className="col mb-4 shadow mt-2 pt-2 pb-4 rounded">
               ここに表テーブルが出る
